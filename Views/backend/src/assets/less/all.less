@@ -1,0 +1,43 @@
+@theme-color: #e74c3c;
+@container-width: 100%;
+
+* {
+  font-family: 'Nunito', sans-serif;
+}
+
+.header-font {
+  font: 32px 'Inconsolata', monospace;
+}
+
+#app {
+  .view {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    flex: 1;
+  }
+
+  .layout-simple {
+
+  }
+  .layout-sidebar {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+@import "_views/login";
+
+@import "_components/sidebar";
+@import "_components/context-menu";
+
+@import "_modules/header";
+@import "_modules/content";
+@import "_modules/breadcrumb";
+@import "_modules/form";
+@import "_modules/message";
+@import "_modules/grid-header";
+@import "_modules/grid";
+@import "_modules/modal-form";
+@import "_modules/list";
+@import "_modules/detail";
