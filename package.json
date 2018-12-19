@@ -1,0 +1,6 @@
+{
+  "name": "pv_backend",
+  "scripts": {
+    "publish": "node scripts/publish"
+  }
+}
