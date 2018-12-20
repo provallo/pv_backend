@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.0.3",
+  "version": "1.0.4",
   
   "changelog": {
     "1.0.1": [
@@ -17,6 +17,9 @@
     ],
     "1.0.3": [
       "Build latest version"
+    ],
+    "1.0.4": [
+      "Fix permission check in user controller"
     ]
   }
 }

@@ -102,6 +102,8 @@ class UserController extends API
                 }
             break;
         }
+        
+        return true;
     }
     
 }
