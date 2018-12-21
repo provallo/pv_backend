@@ -3,6 +3,7 @@
 namespace ProVallo\Controllers\Backend;
 
 use ProVallo\Components\Controller;
+use ProVallo\Plugins\Backend\Models\Menu\Menu;
 
 class IndexController extends Controller
 {
@@ -19,6 +20,21 @@ class IndexController extends Controller
         ]);
         
         return $html;
+    }
+    
+    public function menuAction ()
+    {
+        $items  = Menu::repository()->findBy(['parentID => -1']);
+        $result = [];
+        
+        foreach ($items as $item)
+        {
+            $result[] = $item->toArray();
+        }
+        
+        return self::json()->success([
+            'data' => $result
+        ]);
     }
     
 }

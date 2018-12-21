@@ -4,7 +4,10 @@
             <img src="@/assets/logo.svg" alt="ProVallo Logo">
         </div>
         <div class="menu">
-            <v-menu :items="menu"></v-menu>
+            <v-menu v-if="menu.length > 0" :items="menu"></v-menu>
+            <div v-else class="menu-loader">
+                <fa icon="spinner" spin></fa>
+            </div>
         </div>
         <div class="version-info">
             <div class="application-version">
@@ -33,38 +36,28 @@ export default {
     },
     data () {
         return {
-            menu: [
-                {
-                    active: true,
-                    name: 'Dashboard',
-                    route: '/'
-                },
-                {
-                    name: 'Users',
-                    route: '/users'
-                },
-                {
-                    name: 'Pages',
-                    route: '/pages'
-                },
-                {
-                    name: 'Forms',
-                    route: '/forms'
-                },
-                {
-                    name: 'Media',
-                    route: '/medias'
-                }
-            ],
+            menu: [],
             contextMenu: [
                 {
-                    name: 'Logout',
+                    label: 'Logout',
                     click: this.logout.bind(this)
                 }
             ]
         }
     },
+    mounted () {
+        let me = this
+        
+        me.loadMenu()
+    },
     methods: {
+        loadMenu () {
+            let me = this
+            
+            me.$http.get('backend/index/menu').then(res => res.data).then(({ data }) => {
+                me.menu = data
+            })
+        },
         logout () {
             let me = this
             
