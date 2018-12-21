@@ -18,7 +18,8 @@
         <v-detail :disabled="!editingModel">
             <v-form v-if="editingModel"
                     @submit="submit" :buttons="formButtons"
-                    :style="{ maxWidth: '500px' }">
+                    :style="{ maxWidth: '500px' }"
+                    ref="form">
                 <div class="form-item" v-if="editingModel.id > 0">
                     <label for="id">
                         ID
@@ -69,11 +70,13 @@ export default {
             let me = this
             
             me.editingModel = me.$models.user.create()
+            me.$nextTick(() => me.$refs.form.reset())
         },
         edit (model) {
             let me = this
             
             me.editingModel = model
+            me.$nextTick(() => me.$refs.form.reset())
         },
         submit ({ setMessage, setLoading, setProgress }) {
             let me = this

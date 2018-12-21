@@ -71,6 +71,12 @@ export default {
             }
 
             me.$emit(button.name, actions)
+        },
+        reset () {
+            let me = this
+            
+            me.message.type = null
+            me.message.text = ''
         }
     }
 }
