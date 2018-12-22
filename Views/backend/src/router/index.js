@@ -18,7 +18,7 @@ export default new Router({
         {
             name: 'user.index',
             path: '/users',
-            component: require('@/views/user').default
+            component: require('@/views/user/Index').default
         }
     ]
 })

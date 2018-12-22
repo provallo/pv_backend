@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.0.7",
+  "version": "1.0.8",
   
   "changelog": {
     "1.0.1": [
@@ -30,6 +30,9 @@
     ],
     "1.0.7": [
       "Add backend:build command"
+    ],
+    "1.0.8": [
+      "Fix backend compilation issue"
     ]
   },
   "package": {
