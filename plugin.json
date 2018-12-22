@@ -24,6 +24,9 @@
     "1.0.5": [
       "Load backend menu dynamically",
       "Fix form stuff"
+    ],
+    "1.0.6": [
+      "Add support for external components by other plugins"
     ]
   }
 }

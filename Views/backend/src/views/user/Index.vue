@@ -104,6 +104,10 @@ export default {
             me.$models.user.remove(model).then((success) => {
                 if (success) {
                     me.$refs.grid.load()
+    
+                    if (me.editingModel && me.editingModel.id === model.id) {
+                        me.editingModel = null
+                    }
                 } else {
                     me.$swal({
                         type: 'error',

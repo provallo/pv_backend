@@ -3,3 +3,5 @@ node_modules
 /releases
 /.git
 /.savas
+/Views/backend/src/vendor/*
+!/Views/backend/src/vendor/index.js

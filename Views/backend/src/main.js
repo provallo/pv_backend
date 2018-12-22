@@ -9,8 +9,8 @@ import 'sweetalert2/src/sweetalert2.scss'
 
 Vue.config.productionTip = false
 
-import '@yurderi/vue-ui/dist/vue-ui.css'
-import VueUI from '@yurderi/vue-ui/dist/vue-ui.js'
+import '@yurderi/vue-ui/src/assets/less/all.less'
+import VueUI from '@yurderi/vue-ui/src/index.js'
 import '@/assets/less/all.less'
 
 Vue.use(VueUI)
@@ -34,10 +34,23 @@ Vue.component('v-menu', require('@/components/Menu').default)
 Vue.component('v-context-menu', require('@/components/ContextMenu').default)
 
 /* eslint-disable no-new */
-new Vue({
+let app = new Vue({
     el: '#app',
     router,
     store,
     components: { App },
     template: '<App/>'
+})
+
+window.ProVallo = {
+    $vm: app,
+    $models: models,
+    $router: router,
+    $store: store
+}
+
+import plugins from '@vendor'
+
+plugins.forEach(plugin => {
+    plugin()
 })
