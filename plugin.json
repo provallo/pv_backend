@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.0.6",
+  "version": "1.0.7",
   
   "changelog": {
     "1.0.1": [
@@ -27,6 +27,9 @@
     ],
     "1.0.6": [
       "Add support for external components by other plugins"
+    ],
+    "1.0.7": [
+      "Add backend:build command"
     ]
   },
   "package": {

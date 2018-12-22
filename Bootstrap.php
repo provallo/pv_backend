@@ -3,6 +3,7 @@
 namespace ProVallo\Plugins\Backend;
 
 use ProVallo\Core;
+use ProVallo\Plugins\Backend\Commands\BackendBuildCommand;
 use ProVallo\Plugins\Backend\Commands\BackendRegisterCommand;
 use ProVallo\Plugins\Backend\Components\Auth;
 use ProVallo\Plugins\Backend\Components\ModelValidator;
@@ -44,7 +45,8 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
         // Register custom commands
         Core::events()->subscribe('console.register', function () {
             return [
-                new BackendRegisterCommand()
+                new BackendRegisterCommand(),
+                new BackendBuildCommand()
             ];
         });
     }
