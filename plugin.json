@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.0.8",
+  "version": "1.0.9",
   
   "changelog": {
     "1.0.1": [
@@ -33,6 +33,9 @@
     ],
     "1.0.8": [
       "Fix backend compilation issue"
+    ],
+    "1.0.9": [
+      "New vendor integration"
     ]
   },
   "package": {

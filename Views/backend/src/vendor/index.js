@@ -6,7 +6,7 @@ components.keys().forEach(key => {
         return
     }
     
-    let plugin = components(key)
+    let plugin = components(key).default
     
     plugins.push(plugin)
 })
