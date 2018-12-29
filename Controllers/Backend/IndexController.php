@@ -24,7 +24,7 @@ class IndexController extends Controller
     
     public function menuAction ()
     {
-        $items  = Menu::repository()->findBy(['parentID => -1']);
+        $items  = Menu::repository()->findBy(['parentID => -1'], 'position ASC');
         $result = [];
         
         foreach ($items as $item)

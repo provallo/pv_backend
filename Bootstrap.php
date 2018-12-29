@@ -13,41 +13,47 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
 
     public function execute()
     {
-        Core::instance()->registerModule('backend', [
-            'controller' => [
-                'namespace'     => 'ProVallo\\Controllers\\Backend\\',
-                'class_suffix'  => 'Controller',
-                'method_suffix' => 'Action'
-            ]
-        ]);
-        
-        // Redirect "/backend" to "/backend/"
-        Core::instance()->get('/backend', function ($request, $response) {
-            return $response->withRedirect('/backend/');
-        });
+        if (Core::instance()->getApi() === Core::API_WEB)
+        {
+            Core::instance()->registerModule('backend', [
+                'controller' => [
+                    'namespace'     => 'ProVallo\\Controllers\\Backend\\',
+                    'class_suffix'  => 'Controller',
+                    'method_suffix' => 'Action'
+                ]
+            ]);
     
-        // Define the default backend path
-        Core::instance()->get('/backend/', 'backend:Index:index');
-        
-        // Register all backend controllers
-        $this->registerController('Backend', 'Index');
-        $this->registerController('Backend', 'User');
-        
-        // Register custom services
-        Core::di()->registerShared('auth', function() {
-            return new Auth();
-        });
+            // Redirect "/backend" to "/backend/"
+            Core::instance()->get('/backend', function ($request, $response) {
+                return $response->withRedirect('/backend/');
+            });
     
+            // Define the default backend path
+            Core::instance()->get('/backend/', 'backend:Index:index');
+    
+            // Register all backend controllers
+            $this->registerController('Backend', 'Index');
+            $this->registerController('Backend', 'User');
+            
+            // Register custom services
+            Core::di()->registerShared('auth', function() {
+                return new Auth();
+            });
+        }
+        
+        if (Core::instance()->getApi() === CORE::API_CONSOLE)
+        {
+            // Register custom commands
+            Core::events()->subscribe('console.register', function () {
+                return [
+                    new BackendRegisterCommand(),
+                    new BackendBuildCommand()
+                ];
+            });
+        }
+        
         Core::di()->registerShared('modelValidator', function() {
             return new ModelValidator();
-        });
-        
-        // Register custom commands
-        Core::events()->subscribe('console.register', function () {
-            return [
-                new BackendRegisterCommand(),
-                new BackendBuildCommand()
-            ];
         });
     }
 
