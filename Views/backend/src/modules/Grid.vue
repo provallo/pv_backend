@@ -39,7 +39,8 @@ export default {
                 }
             ],
             columns: 1,
-            fetchParams: () => ({})
+            fetchParams: () => ({}),
+            autoLoad: true
         }
     }),
     props: {
@@ -66,7 +67,9 @@ export default {
     mounted () {
         let me = this
 
-        me.load()
+        if (me.opts.autoLoad) {
+            me.load()
+        }
     },
     methods: {
         click(action) {
