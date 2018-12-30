@@ -12,6 +12,10 @@ div.form-container {
       &:last-child {
         margin: 0;
       }
+      &.is--checkbox {
+        display: flex;
+        flex-direction: row;
+      }
       label {
         small {
           margin: 0 0 0 5px;
@@ -22,6 +26,13 @@ div.form-container {
             color: #999;
             text-decoration: underline dashed;
           }
+        }
+      }
+      .form-item-field {
+        display: flex;
+        flex-direction: row;
+        .form-input, div.select {
+          flex: 1;
         }
       }
     }

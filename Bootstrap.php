@@ -6,6 +6,7 @@ use ProVallo\Core;
 use ProVallo\Plugins\Backend\Commands\BackendBuildCommand;
 use ProVallo\Plugins\Backend\Commands\BackendRegisterCommand;
 use ProVallo\Plugins\Backend\Components\Auth;
+use ProVallo\Plugins\Backend\Components\Config\Manager;
 use ProVallo\Plugins\Backend\Components\ModelValidator;
 
 class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
@@ -34,6 +35,7 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
             // Register all backend controllers
             $this->registerController('Backend', 'Index');
             $this->registerController('Backend', 'User');
+            $this->registerController('Backend', 'Config');
             
             // Register custom services
             Core::di()->registerShared('auth', function() {
@@ -51,6 +53,10 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
                 ];
             });
         }
+    
+        Core::di()->registerShared('backend.config', function() {
+            return new Manager();
+        });
         
         Core::di()->registerShared('modelValidator', function() {
             return new ModelValidator();

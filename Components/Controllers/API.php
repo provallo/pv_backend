@@ -6,6 +6,14 @@ use Favez\ORM\Entity\Entity;
 
 abstract class API extends \ProVallo\Components\Controller
 {
+    
+    const DEFAULT_CONFIG = [
+        'model' => '',
+        'allowedActions' => [],
+        'detail' => [
+            'recursive' => false
+        ]
+    ];
 
     /**
      * @var array
@@ -13,10 +21,7 @@ abstract class API extends \ProVallo\Components\Controller
     private $config;
 
     /**
-     * [
-     *     'model' => '',
-     *     'allowedActions' => []
-     * ]
+     * See API::DEFAULT_CONFIG
      *
      * @return array
      */
@@ -28,12 +33,33 @@ abstract class API extends \ProVallo\Components\Controller
     final public function preDispatch ()
     {
         $this->config = $this->configure();
+        $this->config = array_replace_recursive(self::DEFAULT_CONFIG, $this->config);
         
-        if (!self::auth()->isLoggedIn() && !in_array(self::dispatcher()->actionName(), $this->config['allowedActions'] ?? []))
+        if (!$this->isLoggedIn())
         {
             $this->app()->respond(self::json()->failure(['message' => 'Not logged in']));
             die;
         }
+    }
+    
+    /**
+     * Whether the user is authenticated.
+     *
+     * @return bool
+     */
+    protected function isLoggedIn ()
+    {
+        if (self::auth()->isLoggedIn())
+        {
+            return true;
+        }
+        
+        if (in_array(self::dispatcher()->actionName(), $this->config['allowedActions'] ?? []))
+        {
+            return true;
+        }
+        
+        return false;
     }
 
     final public function listAction ()
@@ -119,7 +145,7 @@ abstract class API extends \ProVallo\Components\Controller
             }
 
             return self::json()->success([
-                'data' => $model->toArray(false)
+                'data' => $model->toArray($this->config['detail']['recursive'])
             ]);
         }
         else

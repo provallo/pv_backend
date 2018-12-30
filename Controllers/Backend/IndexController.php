@@ -3,6 +3,7 @@
 namespace ProVallo\Controllers\Backend;
 
 use ProVallo\Components\Controller;
+use ProVallo\Core;
 use ProVallo\Plugins\Backend\Models\Menu\Menu;
 
 class IndexController extends Controller
@@ -16,7 +17,7 @@ class IndexController extends Controller
         // Rewrite /static to correct path
         $html = strtr($html, [
             '/static' => '/ext/Backend/Views/backend/dist/static',
-            'static' => '/ext/Backend/Views/backend/dist/static'
+            'static'  => '/ext/Backend/Views/backend/dist/static'
         ]);
         
         return $html;
