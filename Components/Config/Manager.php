@@ -20,7 +20,7 @@ class Manager
      */
     public function create ($identifier, $configuration, $additionalData = [])
     {
-        $identifier = $this->convertIdentifier($identifier, $data);
+        $identifier = $this->convertIdentifier($identifier, $additionalData);
         $configID   = $this->getIdByIdentifier($identifier);
         
         if ($configID > 0)
