@@ -116,5 +116,17 @@ class Auth
     {
         return (int) Core::session()->get('pv_userID');
     }
+    
+    /**
+     * Hashes a password for database insertion.
+     *
+     * @param string $password
+     *
+     * @return string
+     */
+    public function hash ($password)
+    {
+        return password_hash($password, PASSWORD_BCRYPT);
+    }
 
 }

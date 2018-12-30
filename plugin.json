@@ -48,7 +48,10 @@
     ],
     "1.1.3": [
       "Implement dynamic configuration",
-      "Allow overriding API::isLoggedIn"
+      "Allow overriding API::isLoggedIn",
+      "Register routes correctly",
+      "Add Auth::hash method like before",
+      "Allow abortion in API::setValues"
     ]
   },
   "package": {

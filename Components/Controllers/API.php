@@ -4,6 +4,13 @@ namespace ProVallo\Plugins\Backend\Components\Controllers;
 
 use Favez\ORM\Entity\Entity;
 
+/**
+ * Class API
+ *
+ * @package ProVallo\Plugins\Backend\Components\Controllers
+ *
+ * @method \ProVallo\Plugins\Backend\Components\Auth auth()
+ */
 abstract class API extends \ProVallo\Components\Controller
 {
     
@@ -101,7 +108,14 @@ abstract class API extends \ProVallo\Components\Controller
             $this->setDefaultValues($model);
         }
 
-        $this->setValues($model, $input);
+        $result = $this->setValues($model, $input);
+        
+        if ($result && !isSuccess($result))
+        {
+            return self::json()->failure([
+                'message' => $result['message']
+            ]);
+        }
 
         /** @var \ProVallo\Plugins\Backend\Components\ModelValidator $validator */
         $validator = self::modelValidator();

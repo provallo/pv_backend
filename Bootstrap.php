@@ -16,30 +16,32 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
     {
         if (Core::instance()->getApi() === Core::API_WEB)
         {
-            Core::instance()->registerModule('backend', [
-                'controller' => [
-                    'namespace'     => 'ProVallo\\Controllers\\Backend\\',
-                    'class_suffix'  => 'Controller',
-                    'method_suffix' => 'Action'
-                ]
-            ]);
-    
-            // Redirect "/backend" to "/backend/"
-            Core::instance()->get('/backend', function ($request, $response) {
-                return $response->withRedirect('/backend/');
-            });
-    
-            // Define the default backend path
-            Core::instance()->get('/backend/', 'backend:Index:index');
-    
-            // Register all backend controllers
-            $this->registerController('Backend', 'Index');
-            $this->registerController('Backend', 'User');
-            $this->registerController('Backend', 'Config');
-            
             // Register custom services
             Core::di()->registerShared('auth', function() {
                 return new Auth();
+            });
+            
+            Core::events()->subscribe('core.route.register', function() {
+                Core::instance()->registerModule('backend', [
+                    'controller' => [
+                        'namespace'     => 'ProVallo\\Controllers\\Backend\\',
+                        'class_suffix'  => 'Controller',
+                        'method_suffix' => 'Action'
+                    ]
+                ]);
+    
+                // Redirect "/backend" to "/backend/"
+                Core::instance()->get('/backend', function ($request, $response) {
+                    return $response->withRedirect('/backend/');
+                });
+    
+                // Define the default backend path
+                Core::instance()->get('/backend/', 'backend:Index:index');
+    
+                // Register all backend controllers
+                $this->registerController('Backend', 'Index');
+                $this->registerController('Backend', 'User');
+                $this->registerController('Backend', 'Config');
             });
         }
         
