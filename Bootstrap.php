@@ -11,7 +11,21 @@ use ProVallo\Plugins\Backend\Components\ModelValidator;
 
 class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
 {
-
+    
+    public function install ()
+    {
+        $this->installDB();
+        
+        return true;
+    }
+    
+    public function update ($previousVersion)
+    {
+        $this->installDB();
+        
+        return true;
+    }
+    
     public function execute()
     {
         if (Core::instance()->getApi() === Core::API_WEB)

@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.1.3",
+  "version": "1.1.4",
   
   "changelog": {
     "1.0.1": [
@@ -52,6 +52,10 @@
       "Register routes correctly",
       "Add Auth::hash method like before",
       "Allow abortion in API::setValues"
+    ],
+    "1.1.4": [
+      "Run migrations at install/update",
+      "Show info when node_modules is missing or backend is not yet compiled"
     ]
   },
   "package": {

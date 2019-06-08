@@ -20,6 +20,13 @@ class BackendBuildCommand extends Command
     {
         $directory = __DIR__ . '/../Views/backend';
         
+        if (!is_dir($directory . '/node_modules'))
+        {
+            $output->writeln('Missing "node_modules" in ' . $directory);
+            $output->writeln('Please install missing dependencies by using yarn or npm.');
+            return;
+        }
+        
         `cd $directory && yarn build`;
     }
     

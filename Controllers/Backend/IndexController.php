@@ -12,6 +12,13 @@ class IndexController extends Controller
     public function indexAction ()
     {
         $filename = __DIR__ . '/../../Views/backend/dist/index.html';
+    
+        if (!is_file($filename))
+        {
+            echo sprintf('The backend is not yet compiled. Please run "php bin/console backend:build" first.');
+            die;
+        }
+        
         $html     = file_get_contents($filename);
         
         // Rewrite /static to correct path
