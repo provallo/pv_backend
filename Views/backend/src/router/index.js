@@ -21,6 +21,11 @@ export default new Router({
             component: require('@/views/user/Index').default
         },
         {
+            name: 'user.group.index',
+            path: '/users/groups',
+            component: require('@/views/group/Index').default
+        },
+        {
             name: 'config.index',
             path: '/config',
             component: require('@/views/config/Index').default

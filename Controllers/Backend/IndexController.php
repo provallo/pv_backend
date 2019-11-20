@@ -12,14 +12,14 @@ class IndexController extends Controller
     public function indexAction ()
     {
         $filename = __DIR__ . '/../../Views/backend/dist/index.html';
-    
+        
         if (!is_file($filename))
         {
             echo sprintf('The backend is not yet compiled. Please run "php bin/console backend:build" first.');
             die;
         }
         
-        $html     = file_get_contents($filename);
+        $html = file_get_contents($filename);
         
         // Rewrite /static to correct path
         $html = strtr($html, [
@@ -32,17 +32,24 @@ class IndexController extends Controller
     
     public function menuAction ()
     {
-        $items  = Menu::repository()->findBy(['parentID => -1'], 'position ASC');
+        return self::json()->success([
+            'data' => $this->getMenu(-1)
+        ]);
+    }
+    
+    protected function getMenu ($parentID)
+    {
+        $items  = Menu::repository()->findBy(['parentID' => $parentID], 'position ASC');
         $result = [];
         
         foreach ($items as $item)
         {
-            $result[] = $item->toArray();
+            $row             = $item->toArray();
+            $row['children'] = $this->getMenu($item->id);
+            $result[]        = $row;
         }
         
-        return self::json()->success([
-            'data' => $result
-        ]);
+        return $result;
     }
     
 }

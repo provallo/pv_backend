@@ -13,6 +13,8 @@ class User extends Entity
     
     public $id;
     
+    public $groupID;
+    
     public $username;
     
     public $password;
@@ -20,6 +22,11 @@ class User extends Entity
     public $created;
     
     public $changed;
+    
+    public function initialize ()
+    {
+        $this->belongsTo(Group::class, 'userID')->setName('group');
+    }
     
     public function validate ()
     {

@@ -68,9 +68,17 @@ class UserController extends API
         $query = parent::getListQuery();
         
         $query->select(null)
-            ->select('id, username, "" AS password, created, changed');
+            ->select('id, groupID, username, "" AS password, created, changed');
         
         return $query;
+    }
+    
+    protected function map ($row)
+    {
+        $row['id']      = (int) $row['id'];
+        $row['groupID'] = (int) $row['groupID'];
+        
+        return $row;
     }
     
     protected function setDefaultValues (Entity $entity)
@@ -82,6 +90,7 @@ class UserController extends API
     {
         $entity->changed  = date('Y-m-d H:i:s');
         $entity->username = $input['username'];
+        $entity->groupID  = $input['groupID'];
         
         if (!empty($input['password']))
         {

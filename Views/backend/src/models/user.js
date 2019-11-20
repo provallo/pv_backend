@@ -1,6 +1,8 @@
 export default {
     fields: [
         { name: 'id', type: 'integer' },
+        { name: 'groupID', type: 'integer' },
+        { name: 'groupID', type: 'integer' },
         { name: 'username', type: 'string', filterable: true },
         { name: 'password', type: 'string' },
         { name: 'created', type: 'string' },

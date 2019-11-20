@@ -28,6 +28,7 @@ Vue.component('v-grid-header', require('@/modules/GridHeader.vue').default)
 Vue.component('v-grid', require('@/modules/Grid.vue').default)
 Vue.component('v-modal-form', require('@/modules/ModalForm.vue').default)
 Vue.component('v-detail', require('@/modules/Detail.vue').default)
+Vue.component('v-remote-combo', require('@/modules/forms/RemoteCombo').default)
 
 Vue.component('v-sidebar', require('@/components/Sidebar').default)
 Vue.component('v-menu', require('@/components/Menu').default)

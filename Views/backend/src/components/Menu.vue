@@ -2,11 +2,21 @@
     <ul v-if="items.length > 0">
         <li v-for="item in items">
             
-            <router-link v-if="item.route" :to="item.route">{{ item.label }}</router-link>
-            <a href="#" v-else @click.prevent="item.click">{{ item.label }}</a>
+            <router-link v-if="item.route" :to="item.route">
+                {{ item.label }}
+                
+                <template v-if="item.children && item.children.length > 0">
+                    <fa icon="chevron-up" class="menu-toggle closed"></fa>
+                    <fa icon="chevron-down" class="menu-toggle opened"></fa>
+                </template>
+            </router-link>
+            <a href="#" v-else @click.prevent="item.click">
+                {{ item.label }}
+            </a>
             
-            <!-- <fa icon="chevron-up" class="menu-toggle" v-if="item.items"></fa>
-            <v-menu v-if="item.items" :items="item.items"></v-menu> -->
+            <template v-if="item.children && item.children.length > 0">
+                <v-menu :items="item.children"></v-menu>
+            </template>
         </li>
     </ul>
 </template>
