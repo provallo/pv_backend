@@ -72,6 +72,7 @@ abstract class API extends \ProVallo\Components\Controller
     final public function listAction ()
     {
         $rows = $this->getListQuery()->fetchAll();
+        $rows = array_map([$this, 'map'], $rows);
 
         return self::json()->success([
             'data' => $rows
@@ -198,6 +199,18 @@ abstract class API extends \ProVallo\Components\Controller
         {
             return self::json()->failure(['message' => 'Missing required param: id']);
         }
+    }
+    
+    /**
+     * Maps a row
+     *
+     * @param array $row
+     *
+     * @return array
+     */
+    protected function map ($row)
+    {
+        return $row;
     }
 
     /**
