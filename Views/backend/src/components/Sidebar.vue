@@ -9,14 +9,9 @@
                 <fa icon="spinner" spin></fa>
             </div>
         </div>
-        <div class="version-info">
-            <div class="application-version">
-                v0.0.1
-            </div>
-        </div>
         <div class="login-info">
             <div class="username">
-                {{ username }}
+                Hi, {{ username }}!
             </div>
             <span class="menu-toggle" @click="$refs.userMenu.show()">
                 <fa icon="chevron-up"></fa>
