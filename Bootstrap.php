@@ -8,6 +8,7 @@ use ProVallo\Plugins\Backend\Commands\BackendRegisterCommand;
 use ProVallo\Plugins\Backend\Components\Auth;
 use ProVallo\Plugins\Backend\Components\Config\Manager;
 use ProVallo\Plugins\Backend\Components\ModelValidator;
+use ProVallo\Plugins\Backend\Components\Permission\PermissionService;
 
 class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
 {
@@ -23,6 +24,9 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
     {
         $this->installDB();
         
+        $permission = new PermissionService();
+        $permission->add('user.backend.access', true, 'Allow the user to login into backend.');
+        
         return true;
     }
     
@@ -33,6 +37,10 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
             // Register custom services
             Core::di()->registerShared('auth', function() {
                 return new Auth();
+            });
+            
+            Core::di()->registerShared('permission', function() {
+                return new PermissionService();
             });
             
             Core::events()->subscribe('core.route.register', function() {

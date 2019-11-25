@@ -43,6 +43,11 @@ class Auth
         {
             if (password_verify($password, $user->password))
             {
+                if (!$this->isAllowedToLogin($user))
+                {
+                    throw new \Exception('You are not allowed to enter this area.');
+                }
+                
                 $this->setUser($user);
             }
             else
@@ -127,6 +132,11 @@ class Auth
     public function hash ($password)
     {
         return password_hash($password, PASSWORD_BCRYPT);
+    }
+    
+    private function isAllowedToLogin (User $user)
+    {
+        return Core::permission()->validate('user.backend.access', $user);
     }
 
 }
