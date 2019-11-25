@@ -15,27 +15,28 @@ abstract class API extends \ProVallo\Components\Controller
 {
     
     const DEFAULT_CONFIG = [
-        'model' => '',
+        'model'          => '',
         'allowedActions' => [],
-        'detail' => [
+        'detail'         => [
             'recursive' => false
         ]
     ];
-
+    
     /**
      * @var array
      */
     private $config;
-
+    
     /**
      * See API::DEFAULT_CONFIG
      *
      * @return array
      */
     abstract public function configure ();
-
+    
     /**
-     * Make sure the user is logged in before he grants access to api controllers.
+     * Make sure the user is logged in before he grants access to api
+     * controllers.
      */
     final public function preDispatch ()
     {
@@ -45,6 +46,17 @@ abstract class API extends \ProVallo\Components\Controller
         if (!$this->isLoggedIn())
         {
             $this->app()->respond(self::json()->failure(['message' => 'Not logged in']));
+            die;
+        }
+        
+        if (self::auth()->isLoggedIn()
+            && !self::permission()->validateUserID(
+                'user.backend.access',
+                self::auth()->getUserID()
+            )
+        )
+        {
+            $this->app()->respond(self::json()->failure(['message' => 'You are not allowed to enter this area.']));
             die;
         }
     }
@@ -68,36 +80,39 @@ abstract class API extends \ProVallo\Components\Controller
         
         return false;
     }
-
+    
     final public function listAction ()
     {
         $rows = $this->getListQuery()->fetchAll();
-        $rows = array_map([$this, 'map'], $rows);
-
+        $rows = array_map([
+            $this,
+            'map'
+        ], $rows);
+        
         return self::json()->success([
             'data' => $rows
         ]);
     }
-
+    
     public function saveAction ()
     {
         $input = self::request()->getParams();
         $id    = (int) self::request()->getParam('id');
         $isNew = $id <= 0;
-
+        
         /** @var \Favez\ORM\Entity\Repository $repository */
         $repository = $this->getClass()::repository();
         $className  = $this->getClass();
-
+        
         if (!$isNew)
         {
             $model = $repository->find($id);
-
+            
             if (!($model instanceof $className))
             {
                 return self::json()->failure(['message' => 'Entity by id not found.']);
             }
-
+            
             if (!$this->checkPermission($model, 'save'))
             {
                 return self::json()->failure(['message' => 'You are not permitted to edit this entity.']);
@@ -108,7 +123,7 @@ abstract class API extends \ProVallo\Components\Controller
             $model = $repository->create();
             $this->setDefaultValues($model);
         }
-
+        
         $result = $this->setValues($model, $input);
         
         if ($result && !isSuccess($result))
@@ -117,48 +132,48 @@ abstract class API extends \ProVallo\Components\Controller
                 'message' => $result['message']
             ]);
         }
-
+        
         /** @var \ProVallo\Plugins\Backend\Components\ModelValidator $validator */
         $validator = self::modelValidator();
-
+        
         if ($validator->validate($model))
         {
             $model->save();
-
+            
             $this->afterSave($model, $isNew);
-
+            
             return self::json()->success([
                 'data' => $model->toArray(false)
             ]);
         }
-
+        
         return self::json()->failure([
             'messages' => $validator->getMessages()
         ]);
     }
-
-    public function detailAction()
+    
+    public function detailAction ()
     {
         $id = (int) self::request()->getParam('id');
-
+        
         /** @var \Favez\ORM\Entity\Repository $repository */
         $repository = $this->getClass()::repository();
         $className  = $this->getClass();
-
+        
         if ($id > 0)
         {
             $model = $repository->find($id);
-
+            
             if (!($model instanceof $className))
             {
                 return self::json()->failure(['message' => 'Entity by id not found.']);
             }
-
+            
             if (!$this->checkPermission($model, 'detail'))
             {
                 return self::json()->failure(['message' => 'You are not permitted to edit this entity.']);
             }
-
+            
             return self::json()->success([
                 'data' => $model->toArray($this->config['detail']['recursive'])
             ]);
@@ -168,31 +183,31 @@ abstract class API extends \ProVallo\Components\Controller
             return self::json()->failure(['message' => 'Missing required param: id']);
         }
     }
-
+    
     public function removeAction ()
     {
         $id = (int) self::request()->getParam('id');
-
+        
         /** @var \Favez\ORM\Entity\Repository $repository */
         $repository = $this->getClass()::repository();
         $className  = $this->getClass();
-
+        
         if ($id > 0)
         {
             $model = $repository->find($id);
-
+            
             if (!($model instanceof $className))
             {
                 return self::json()->failure(['message' => 'Entity by id not found.']);
             }
-
+            
             if (!$this->checkPermission($model, 'remove'))
             {
                 return self::json()->failure(['message' => 'You are not permitted to remove this entity.']);
             }
-
+            
             $model->remove();
-
+            
             return self::json()->success();
         }
         else
@@ -212,7 +227,7 @@ abstract class API extends \ProVallo\Components\Controller
     {
         return $row;
     }
-
+    
     /**
      * Builds the list query.
      *
@@ -221,10 +236,10 @@ abstract class API extends \ProVallo\Components\Controller
     protected function getListQuery ()
     {
         $table = $this->getClass()::SOURCE;
-
+        
         return self::db()->from($table);
     }
-
+    
     /**
      * Pre-check if the current logged in user is allowed to mutate the entity.
      *
@@ -237,7 +252,7 @@ abstract class API extends \ProVallo\Components\Controller
     {
         return true;
     }
-
+    
     /**
      * Applies default values for an entity when it gets created.
      *
@@ -245,9 +260,9 @@ abstract class API extends \ProVallo\Components\Controller
      */
     protected function setDefaultValues (Entity $entity)
     {
-
+    
     }
-
+    
     /**
      * Applies values for an entity from $_POST
      *
@@ -256,23 +271,23 @@ abstract class API extends \ProVallo\Components\Controller
      */
     protected function setValues (Entity $entity, $input)
     {
-
+    
     }
-
+    
     /**
      * Called after the entity were saved.
      *
      * @param Entity  $entity
-     * @param boolean $isNew  Whether the entity is newly created
+     * @param boolean $isNew Whether the entity is newly created
      */
     protected function afterSave (Entity $entity, $isNew)
     {
-
+    
     }
-
-    protected function getClass()
+    
+    protected function getClass ()
     {
         return $this->config['model'];
     }
-
+    
 }

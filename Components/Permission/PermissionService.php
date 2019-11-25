@@ -31,6 +31,31 @@ class PermissionService
         return $permission->id;
     }
     
+    public function validateUserID ($name, $userID)
+    {
+        $sql = '
+            SELECT IF(pv.id, pv.value, p.defaultValue)
+            FROM permission p
+            LEFT JOIN user u ON u.id = ?
+            LEFT JOIN permission_value pv ON pv.permissionID = p.id
+            WHERE p.name = ?
+              AND pv.groupID = u.groupID
+        ';
+        
+        $stmt = Core::db()->query($sql);
+        $stmt->bindValue(1, $userID);
+        $stmt->bindValue(2, $name);
+        
+        if ($stmt->execute())
+        {
+            $value = (int) $stmt->fetchColumn();
+            
+            return $value === 1;
+        }
+        
+        throw new \Exception('Unable to check permissions.');
+    }
+    
     public function validate ($name, User $user)
     {
         $sql = '
@@ -46,7 +71,8 @@ class PermissionService
         $stmt->bindValue(2, $user->groupID);
         $stmt->bindValue(3, $name);
         
-        if ($stmt->execute()) {
+        if ($stmt->execute())
+        {
             $value = (int) $stmt->fetchColumn();
             
             return $value === 1;
