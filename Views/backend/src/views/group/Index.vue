@@ -32,6 +32,18 @@
                     </label>
                     <v-input type="text" id="name" v-model="editingModel.name"></v-input>
                 </div>
+              
+                <div class="permission-container" v-if="permissions">
+                  <div class="header">
+                    Permissions
+                  </div>
+                  
+                    <template v-for="p in permissions">
+                      <v-checkbox :name="p.name"
+                                  :label="p.label || p.name"
+                                  v-model="p.value.value"></v-checkbox>
+                    </template>
+                </div>
             </v-form>
         </v-detail>
     </div>
@@ -53,7 +65,8 @@ export default {
                     name: 'submit'
                 }
             ],
-            editingModel: null
+            editingModel: null,
+            permissions: []
         }
     },
     methods: {
@@ -68,9 +81,13 @@ export default {
             
             me.editingModel = model
             me.$nextTick(() => me.$refs.form.reset())
+            
+            me.loadPermissions()
         },
         submit ({ setMessage, setLoading, setProgress }) {
             let me = this
+            
+            me.editingModel.permissions = me.permissions
             
             setLoading(true)
             me.$models.group.save(me.editingModel).then(({ success, data, messages }) => {
@@ -79,6 +96,10 @@ export default {
                     setLoading(false)
     
                     me.editingModel.id = data.id
+                    
+                    delete me.editingModel.permissions
+                    me.loadPermissions()
+                    
                     me.$refs.grid.load()
                 } else {
                     setMessage('error', messages[0])
@@ -108,6 +129,13 @@ export default {
                 }
             }).catch(error => {
                 console.log(error)
+            })
+        },
+        loadPermissions () {
+            let me = this
+
+            me.$models.permission.list({ groupID: me.editingModel.id }).then(data => {
+                me.permissions = data
             })
         }
     }

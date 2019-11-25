@@ -5,6 +5,7 @@ namespace ProVallo\Controllers\Backend;
 use Favez\ORM\Entity\Entity;
 use ProVallo\Core;
 use ProVallo\Plugins\Backend\Components\Controllers\API;
+use ProVallo\Plugins\Backend\Models\Permission\Value;
 use ProVallo\Plugins\Backend\Models\User\Group;
 use ProVallo\Plugins\Backend\Models\User\User;
 
@@ -48,9 +49,36 @@ class GroupController extends API
     
     protected function checkPermission (Entity $entity, $action)
     {
-        $count = Core::db()->from('user')->where('groupID = ?', $entity->id)->count();
+        if ($action === 'remove')
+        {
+            $count = Core::db()->from('user')->where('groupID = ?', $entity->id)->count();
+            
+            return $count === 0;
+        }
         
-        return $count === 0;
+        return true;
+    }
+    
+    protected function afterSave (Entity $entity, $isNew)
+    {
+        if ($permissions = self::request()->getParam('permissions'))
+        {
+            foreach ($permissions as $permission)
+            {
+                $value = Value::repository()->findOneBy([
+                    'id' => $permission['value']['id'],
+                ]);
+                if (!isset($value))
+                {
+                    $value               = Value::create();
+                    $value->permissionID = $permission['id'];
+                    $value->groupID      = $entity->id;
+                }
+                
+                $value->value = (int) $permission['value']['value'];
+                $value->save();
+            }
+        }
     }
     
 }

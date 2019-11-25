@@ -5,6 +5,7 @@ namespace ProVallo\Controllers\Backend;
 use Favez\ORM\Entity\Entity;
 use ProVallo\Plugins\Backend\Components\Controllers\API;
 use ProVallo\Plugins\Backend\Models\Permission\Permission;
+use ProVallo\Plugins\Backend\Models\Permission\Value;
 
 class PermissionController extends API
 {
@@ -29,6 +30,27 @@ class PermissionController extends API
     protected function map ($row)
     {
         $row['id'] = (int) $row['id'];
+        
+        if (($groupID = (int) self::request()->getParam('groupID')) > 0)
+        {
+            $value = Value::repository()->findOneBy([
+                'permissionID' => $row['id'],
+                'groupID'      => $groupID
+            ]);
+            
+            if (!isset($value))
+            {
+                $value = [
+                    'id'    => -1,
+                    'value' => $row['defaultValue']
+                ];
+            }
+            
+            $row['value'] = [
+                'id'    => (int) $value['id'],
+                'value' => (bool) $value['value']
+            ];
+        }
         
         return $row;
     }
