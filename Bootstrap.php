@@ -65,6 +65,7 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
                 $this->registerController('Backend', 'User');
                 $this->registerController('Backend', 'Config');
                 $this->registerController('Backend', 'Group');
+                $this->registerController('Backend', 'Permission');
             });
         }
         
