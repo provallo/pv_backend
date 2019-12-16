@@ -3,6 +3,7 @@
 namespace ProVallo\Controllers\Backend;
 
 use Favez\ORM\Entity\Entity;
+use ProVallo\Core;
 use ProVallo\Plugins\Backend\Components\Controllers\API;
 use ProVallo\Plugins\Backend\Models\Permission\Permission;
 use ProVallo\Plugins\Backend\Models\Permission\Value;
@@ -68,7 +69,11 @@ class PermissionController extends API
     
     protected function checkPermission (Entity $entity, $action)
     {
-        return true;
+        $count = Core::db()->from('permission_value')
+            ->where('permissionID', $entity->id)
+            ->count();
+        
+        return $count === 0;
     }
     
 }
