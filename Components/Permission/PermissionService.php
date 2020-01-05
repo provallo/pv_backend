@@ -37,9 +37,8 @@ class PermissionService
             SELECT IF(pv.id, pv.value, p.defaultValue)
             FROM permission p
             LEFT JOIN user u ON u.id = ?
-            LEFT JOIN permission_value pv ON pv.permissionID = p.id
+            LEFT JOIN permission_value pv ON pv.permissionID = p.id AND pv.groupID = u.groupID
             WHERE p.name = ?
-              AND pv.groupID = u.groupID
         ';
         
         $stmt = Core::db()->query($sql);

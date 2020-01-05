@@ -49,7 +49,7 @@ abstract class API extends \ProVallo\Components\Controller
             die;
         }
         
-        if (self::auth()->isLoggedIn()
+        if ($this->isLoggedIn()
             && !self::permission()->validateUserID(
                 'user.backend.access',
                 self::auth()->getUserID()
