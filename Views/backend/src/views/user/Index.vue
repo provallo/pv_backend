@@ -57,7 +57,7 @@
 export default {
     data() {
         let me = this
-        
+
         return {
             gridConfig: {
                 model: me.$models.user
@@ -75,25 +75,25 @@ export default {
     methods: {
         create () {
             let me = this
-            
+
             me.editingModel = me.$models.user.create()
             me.$nextTick(() => me.$refs.form.reset())
         },
         edit (model) {
             let me = this
-            
+
             me.editingModel = model
             me.$nextTick(() => me.$refs.form.reset())
         },
         submit ({ setMessage, setLoading, setProgress }) {
             let me = this
-            
+
             setLoading(true)
             me.$models.user.save(me.editingModel).then(({ success, data, messages }) => {
                 if (success) {
                     setMessage('success', 'The user were saved successfully')
                     setLoading(false)
-    
+
                     me.editingModel.id = data.id
                     me.$refs.grid.load()
                 } else {
@@ -107,11 +107,11 @@ export default {
         },
         remove (model) {
             let me = this
-            
+
             me.$models.user.remove(model).then((success) => {
                 if (success) {
                     me.$refs.grid.load()
-    
+
                     if (me.editingModel && me.editingModel.id === model.id) {
                         me.editingModel = null
                     }

@@ -14,7 +14,9 @@ use Favez\ORM\Entity\Entity;
 abstract class API extends \ProVallo\Components\Controller
 {
     
-    const DEFAULT_CONFIG = [
+    const DEFAULT_PERMISSION = 'user.backend.access';
+    
+    const DEFAULT_CONFIG     = [
         'model'          => '',
         'allowedActions' => [],
         'detail'         => [
@@ -50,13 +52,16 @@ abstract class API extends \ProVallo\Components\Controller
         }
         
         if ($this->isLoggedIn()
+            && !empty(self::DEFAULT_PERMISSION)
             && !self::permission()->validateUserID(
-                'user.backend.access',
+                self::DEFAULT_PERMISSION,
                 self::auth()->getUserID()
             )
         )
         {
-            $this->app()->respond(self::json()->failure(['message' => 'You are not allowed to enter this area.']));
+            $this->app()->respond(self::json()->failure([
+                'message' => 'You are not allowed to enter this area.'
+            ]));
             die;
         }
     }
