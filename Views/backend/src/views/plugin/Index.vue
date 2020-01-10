@@ -12,6 +12,11 @@
                     </div>
                     <div class="item-version">
                       {{ model.version }}
+                      <template v-if="model.remoteUpdate || model.localUpdate">
+                        <fa icon="long-arrow-alt-right" style="margin:0 5px;" />
+                         {{ model.localUpdate || model.remoteUpdate }}
+                         <fa icon="cloud" style="margin:0 5px;" v-if="model.remoteUpdate" />
+                      </template>
                     </div>
                 </div>
             </div>
@@ -65,8 +70,13 @@
                         :spin="pluginAction.id === 'uninstall'">
                 Uninstall
               </v-button>
-              <v-button :disabled="true">
+              <v-button :disabled="!(editingModel.localUpdate || editingModel.remoteUpdate) || !editingModel.active"
+                        @click="update(editingModel)"
+                        :spin="pluginAction.id === 'update'">
                 Update
+                <template v-if="editingModel.localUpdate || editingModel.remoteUpdate">
+                  to {{ editingModel.localUpdate || editingModel.remoteUpdate }}
+                </template>
               </v-button>
             </div>
             <div class="plugin-action-result"
@@ -166,7 +176,31 @@ export default {
       })
     },
     update(model) {
+      const me = this
 
+      me.pluginAction.id = 'update'
+      me.pluginAction.success = null
+      me.pluginAction.error = null
+      me.pluginAction.errorDetails = null
+
+      me.$http.post('backend/plugin/update', { name: model.name }).then(response => {
+        me.pluginAction.id = null
+        me.$refs.grid.load()
+
+        if (response.data.success) {
+          me.pluginAction.success = 'The plugin were updated successfully.'
+          me.editingModel.version = response.data.version
+
+          if (me.editingModel.localUpdate) {
+            delete me.editingModel.localUpdate
+          } else if (me.editingModel.remoteUpdate) {
+            delete me.editingModel.remoteUpdate
+          }
+        } else {
+          me.pluginAction.error = 'The plugin were not updated. See error details below.'
+          me.pluginAction.errorDetails = response
+        }
+      })
     }
   }
 }

@@ -1,0 +1,66 @@
+.is--plugin-index {
+  .item-meta {
+    .item-active {
+      width: 20px;
+      color: green;
+    }
+    .item-version {
+      font-size: 12px;
+      background: rgba(0, 0, 0, 0.1);
+      padding: 0 5px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 0 0 10px;
+    }
+  }
+  .plugin-detail {
+    .plugin-header {
+      padding: 15px;
+      font-size: 32px;
+    }
+    .plugin-description {
+      background: rgba(0, 0, 0, 0.1);
+      margin: 0 15px;
+      padding: 15px;
+      font-family: 'Consolas', monospace;
+      font-size: 12px;
+    }
+    .plugin-meta {
+      margin: 15px;
+      .meta-item {
+        display: flex;
+        flex-direction: row;
+        padding: 5px 0;
+        .item-label {
+          width: 120px;
+          color: #666;
+        }
+        .item-value {
+
+        }
+      }
+    }
+    .plugin-actions {
+      margin: 0 15px;
+      display: flex;
+      flex-direction: row;
+      button {
+        margin-right: 10px;
+      }
+    }
+    .plugin-action-result {
+      margin: 15px;
+      .error-details {
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.1);
+        font-family: 'Consolas', monospace;
+        font-size: 12px;
+        white-space: pre;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+    }
+  }
+}
