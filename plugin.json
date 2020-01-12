@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "changelog": {
     "1.0.1": [
       "Initial release"
@@ -74,6 +74,9 @@
     "1.4.0": [
       "Add plugin manager",
       "Improve API controller permission check"
+    ],
+    "1.4.1": [
+      "Fix plugin controller for improved plugin system"
     ]
   },
   "package": {
