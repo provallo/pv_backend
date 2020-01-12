@@ -3,7 +3,7 @@
 namespace ProVallo\Plugins\Backend\Commands;
 
 use ProVallo\Components\Command;
-use ProVallo\Core;
+use ProVallo\Plugins\Backend\Job\BuildJob;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -18,16 +18,8 @@ class BackendBuildCommand extends Command
     
     protected function execute (InputInterface $input, OutputInterface $output)
     {
-        $directory = __DIR__ . '/../Views/backend';
-        
-        if (!is_dir($directory . '/node_modules'))
-        {
-            $output->writeln('Missing "node_modules" in ' . $directory);
-            $output->writeln('Please install missing dependencies by using yarn or npm.');
-            return;
-        }
-        
-        `cd $directory && yarn build`;
+        $job = new BuildJob();
+        $job->execute($output);
     }
     
 }

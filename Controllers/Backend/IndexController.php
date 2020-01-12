@@ -3,7 +3,6 @@
 namespace ProVallo\Controllers\Backend;
 
 use ProVallo\Components\Controller;
-use ProVallo\Core;
 use ProVallo\Plugins\Backend\Models\Menu\Menu;
 
 class IndexController extends Controller

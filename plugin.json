@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "changelog": {
     "1.0.1": [
       "Initial release"
@@ -77,6 +77,9 @@
     ],
     "1.4.1": [
       "Fix plugin controller for improved plugin system"
+    ],
+    "1.5.0": [
+      "Write job output if any"
     ]
   },
   "package": {
