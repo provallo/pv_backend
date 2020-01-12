@@ -84,6 +84,7 @@
               <v-message type="success" v-if="pluginAction.success">
                 {{ pluginAction.success }}
               </v-message>
+              <div class="error-details" v-if="pluginAction.successDetails">{{ pluginAction.successDetails }}</div>
 
               <template v-if="pluginAction.error">
                 <v-message type="error">
@@ -118,6 +119,7 @@ export default {
       pluginAction: {
         id: null,
         success: null,
+        successDetails: null,
         error: null,
         errorDetails: null
       }
@@ -136,6 +138,7 @@ export default {
       me.pluginAction.success = null
       me.pluginAction.error = null
       me.pluginAction.errorDetails = null
+      me.pluginAction.successDetails = null
 
       me.$http.post('backend/plugin/install', { name: model.name }).then(response => {
         me.pluginAction.id = null
@@ -144,6 +147,10 @@ export default {
         if (response.data.success) {
           me.pluginAction.success = 'The plugin were installed successfully.'
           me.editingModel.active = true
+
+          if (response.data.jobOutput) {
+            me.pluginAction.successDetails = response.data.jobOutput
+          }
         } else {
           me.pluginAction.error = 'The plugin were not installed. See error details below.'
           me.pluginAction.errorDetails = response
@@ -161,6 +168,7 @@ export default {
       me.pluginAction.success = null
       me.pluginAction.error = null
       me.pluginAction.errorDetails = null
+      me.pluginAction.successDetails = null
 
       me.$http.post('backend/plugin/uninstall', { name: model.name }).then(response => {
         me.pluginAction.id = null
@@ -169,6 +177,10 @@ export default {
         if (response.data.success) {
           me.pluginAction.success = 'The plugin were uninstalled successfully.'
           me.editingModel.active = false
+
+          if (response.data.jobOutput) {
+            me.pluginAction.successDetails = response.data.jobOutput
+          }
         } else {
           me.pluginAction.error = 'The plugin were not uninstalled. See error details below.'
           me.pluginAction.errorDetails = response
@@ -182,6 +194,7 @@ export default {
       me.pluginAction.success = null
       me.pluginAction.error = null
       me.pluginAction.errorDetails = null
+      me.pluginAction.successDetails = null
 
       me.$http.post('backend/plugin/update', { name: model.name }).then(response => {
         me.pluginAction.id = null
@@ -190,6 +203,10 @@ export default {
         if (response.data.success) {
           me.pluginAction.success = 'The plugin were updated successfully.'
           me.editingModel.version = response.data.version
+
+          if (response.data.jobOutput) {
+            me.pluginAction.successDetails = response.data.jobOutput
+          }
 
           if (me.editingModel.localUpdate) {
             delete me.editingModel.localUpdate

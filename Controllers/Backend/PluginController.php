@@ -3,9 +3,11 @@
 namespace ProVallo\Controllers\Backend;
 
 use Favez\ORM\Entity\Entity;
+use ProVallo\Components\Job\JobRunner;
 use ProVallo\Components\Plugin\Updater\Update;
 use ProVallo\Models\Plugin\Plugin;
 use ProVallo\Plugins\Backend\Components\Controllers\API;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class PluginController extends API
 {
@@ -61,6 +63,14 @@ class PluginController extends API
             $result = self::plugins()->install($name);
             
             if ($result->isSuccess()) {
+                if ($result->hasJobs()) {
+                    $output = new BufferedOutput();
+                    $runner = new JobRunner($output);
+                    $runner->run($result->getJobs());
+                    
+                    self::json()->assign('jobOutput', $output->fetch());
+                }
+                
                 return self::json()->success();
             }
             
@@ -85,6 +95,14 @@ class PluginController extends API
             $result = self::plugins()->uninstall($name);
     
             if ($result->isSuccess()) {
+                if ($result->hasJobs()) {
+                    $output = new BufferedOutput();
+                    $runner = new JobRunner($output);
+                    $runner->run($result->getJobs());
+        
+                    self::json()->assign('jobOutput', $output->fetch());
+                }
+                
                 return self::json()->success();
             }
     
@@ -127,6 +145,14 @@ class PluginController extends API
             $result = self::plugins()->update($name);
     
             if ($result->isSuccess()) {
+                if ($result->hasJobs()) {
+                    $output = new BufferedOutput();
+                    $runner = new JobRunner($output);
+                    $runner->run($result->getJobs());
+        
+                    self::json()->assign('jobOutput', $output->fetch());
+                }
+                
                 return self::json()->success([
                     'version' => $plugin->getInfo()->getVersion()
                 ]);
