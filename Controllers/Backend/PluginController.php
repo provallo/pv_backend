@@ -60,12 +60,13 @@ class PluginController extends API
         {
             $result = self::plugins()->install($name);
             
-            if (is_array($result))
-            {
-                return self::json()->assign($result)->send();
+            if ($result->isSuccess()) {
+                return self::json()->success();
             }
             
-            return self::json()->success();
+            return self::json()->failure([
+                'message' => $result->getMessage()
+            ]);
         }
         catch (\Exception $ex)
         {
@@ -82,13 +83,14 @@ class PluginController extends API
         try
         {
             $result = self::plugins()->uninstall($name);
-            
-            if (is_array($result))
-            {
-                return self::json()->assign($result)->send();
+    
+            if ($result->isSuccess()) {
+                return self::json()->success();
             }
-            
-            return self::json()->success();
+    
+            return self::json()->failure([
+                'message' => $result->getMessage()
+            ]);
         }
         catch (\Exception $ex)
         {
@@ -123,18 +125,16 @@ class PluginController extends API
             }
             
             $result = self::plugins()->update($name);
-            
-            if (isSuccess($result))
-            {
-                self::json()->assign('version', $plugin->getInfo()->getVersion());
+    
+            if ($result->isSuccess()) {
+                return self::json()->success([
+                    'version' => $plugin->getInfo()->getVersion()
+                ]);
             }
-            
-            if (is_array($result))
-            {
-                return self::json()->assign($result)->send();
-            }
-            
-            return self::json()->success();
+    
+            return self::json()->failure([
+                'message' => $result->getMessage()
+            ]);
         }
         catch (\Exception $ex)
         {
