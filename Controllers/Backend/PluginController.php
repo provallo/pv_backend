@@ -32,13 +32,20 @@ class PluginController extends API
     protected function map ($row)
     {
         $row['id'] = (int) $row['id'];
+        $plugin    = self::plugins()->get($row['name']);
         
-        $plugin = self::plugins()->get($row['name']);
-        $update = self::plugins()->getUpdater()->checkForUpdate($plugin->getInstance());
-        
-        if ($update instanceof Update)
+        try
         {
-            $row['remoteUpdate'] = $update->getVersion();
+            $update = @self::plugins()->getUpdater()->checkForUpdate($plugin->getInstance());
+            
+            if ($update instanceof Update)
+            {
+                $row['remoteUpdate'] = $update->getVersion();
+            }
+        }
+        catch (\Exception $ex)
+        {
+            // Ignore network errors
         }
         
         if ($plugin->getInfo()->getVersion() !== $row['version'])
@@ -62,8 +69,10 @@ class PluginController extends API
         {
             $result = self::plugins()->install($name);
             
-            if ($result->isSuccess()) {
-                if ($result->hasJobs()) {
+            if ($result->isSuccess())
+            {
+                if ($result->hasJobs())
+                {
                     $output = new BufferedOutput();
                     $runner = new JobRunner($output);
                     $runner->run($result->getJobs());
@@ -93,19 +102,21 @@ class PluginController extends API
         try
         {
             $result = self::plugins()->uninstall($name);
-    
-            if ($result->isSuccess()) {
-                if ($result->hasJobs()) {
+            
+            if ($result->isSuccess())
+            {
+                if ($result->hasJobs())
+                {
                     $output = new BufferedOutput();
                     $runner = new JobRunner($output);
                     $runner->run($result->getJobs());
-        
+                    
                     self::json()->assign('jobOutput', $output->fetch());
                 }
                 
                 return self::json()->success();
             }
-    
+            
             return self::json()->failure([
                 'message' => $result->getMessage()
             ]);
@@ -143,13 +154,15 @@ class PluginController extends API
             }
             
             $result = self::plugins()->update($name);
-    
-            if ($result->isSuccess()) {
-                if ($result->hasJobs()) {
+            
+            if ($result->isSuccess())
+            {
+                if ($result->hasJobs())
+                {
                     $output = new BufferedOutput();
                     $runner = new JobRunner($output);
                     $runner->run($result->getJobs());
-        
+                    
                     self::json()->assign('jobOutput', $output->fetch());
                 }
                 
@@ -157,7 +170,7 @@ class PluginController extends API
                     'version' => $plugin->getInfo()->getVersion()
                 ]);
             }
-    
+            
             return self::json()->failure([
                 'message' => $result->getMessage()
             ]);
