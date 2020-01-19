@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "changelog": {
     "1.0.1": [
       "Initial release"
@@ -86,6 +86,10 @@
     ],
     "1.6.1": [
       "Fix plugin controller for updated plugin system"
+    ],
+    "1.7.0": [
+      "Refactor code",
+      "Add component entity multi select"
     ]
   },
   "package": {
