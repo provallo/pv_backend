@@ -148,7 +148,7 @@ abstract class API extends \ProVallo\Components\Controller
             $this->afterSave($model, $isNew);
             
             return self::json()->success([
-                'data' => $model->toArray(false)
+                'data' => $model->toArray($this->config['detail']['recursive'])
             ]);
         }
         
