@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "changelog": {
     "1.0.1": [
       "Initial release"
@@ -96,6 +96,9 @@
       "Update plugin.json",
       "Update yurderi/vue-ui",
       "Fix select styling"
+    ],
+    "1.8.0": [
+      "Improve API controller"
     ]
   },
   "package": {
