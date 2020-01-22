@@ -11,6 +11,7 @@ use ProVallo\Plugins\Backend\Components\Config\Manager;
 use ProVallo\Plugins\Backend\Components\ModelValidator;
 use ProVallo\Plugins\Backend\Components\Permission\PermissionService;
 use ProVallo\Plugins\Backend\Job\BuildJob;
+use ProVallo\Plugins\Backend\Job\CreateConfigJob;
 
 class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
 {
@@ -18,33 +19,22 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
     public function install ()
     {
         $this->installDB();
-        $this->createConfig();
         
         return (new LifecycleResult(LifecycleResult::TYPE_INSTALL, true))
+            ->addJob(new CreateConfigJob())
             ->addJob(new BuildJob());
     }
     
     public function update ($previousVersion)
     {
         $this->installDB();
-        $this->createConfig();
         
         $permission = new PermissionService();
         $permission->add('user.backend.access', true, 'Allow the user to login into backend.');
         
         return (new LifecycleResult(LifecycleResult::TYPE_UPDATE, true))
+            ->addJob(new CreateConfigJob())
             ->addJob(new BuildJob());
-    }
-    
-    public function createConfig ()
-    {
-        Core::di()->get('backend.config')->create($this, [
-            'node.path' => [
-                'type'  => 'text',
-                'label' => 'node.js executable path',
-                'value' => ''
-            ]
-        ]);
     }
     
     public function execute ()
@@ -117,9 +107,9 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
     public static function getConfig ()
     {
         $plugin = Core::plugins()->get('Backend');
-        $config = Core::di()->get('backend.config')->get($plugin);
+        $manager = new Manager();
         
-        return $config;
+        return $manager->get($plugin);
     }
     
 }
