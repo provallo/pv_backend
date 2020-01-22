@@ -19,6 +19,9 @@ class Bootstrap extends \ProVallo\Components\Plugin\Bootstrap
     public function install ()
     {
         $this->installDB();
+    
+        $permission = new PermissionService();
+        $permission->add('user.backend.access', true, 'Allow the user to login into backend.');
         
         return (new LifecycleResult(LifecycleResult::TYPE_INSTALL, true))
             ->addJob(new CreateConfigJob())
