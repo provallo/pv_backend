@@ -26,12 +26,13 @@ class BuildJob implements JobInterface
             return 1;
         }
         
-        $config  = Bootstrap::getConfig();
-        $nodeBin = $config['node.path'];
-        
-        if (empty($nodeBin) || !is_file($nodeBin) || !is_readable($nodeBin) || !is_executable($nodeBin))
+        try
         {
-            $output->writeln('Invalid node bin path.');
+            $nodeBin = $this->getNodeBin();
+        }
+        catch (\Exception $ex)
+        {
+            $output->writeln($ex->getMessage());
             
             return 1;
         }
@@ -47,6 +48,34 @@ class BuildJob implements JobInterface
         $output->writeln($stdout);
         
         return $returnCode;
+    }
+    
+    private function getNodeBin (): string
+    {
+        $config  = Bootstrap::getConfig();
+        $nodeBin = $config['node.path'];
+        
+        if (empty($nodeBin))
+        {
+            throw new \Exception('Missing note bin path.');
+        }
+        
+        if (!is_file($nodeBin))
+        {
+            throw new \Exception('The given node binary was not found.');
+        }
+        
+        if (!is_readable($nodeBin))
+        {
+            throw new \Exception('The given node binary is not readable.');
+        }
+        
+        if (!is_executable($nodeBin))
+        {
+            throw new \Exception('The given note binary is not executable.');
+        }
+        
+        return $nodeBin;
     }
     
 }
