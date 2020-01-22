@@ -13,7 +13,7 @@ class BackendRegisterCommand extends Command
     protected function configure ()
     {
         $this->setName('backend:register');
-        $this->setDescription('Registers additional backend components.');
+        $this->setDescription('Linking additional backend components.');
     }
     
     protected function execute (InputInterface $input, OutputInterface $output)
@@ -22,9 +22,6 @@ class BackendRegisterCommand extends Command
         
         /** @var \ProVallo\Components\Plugin\Bootstrap[] $plugins */
         $plugins = Core::events()->collect('backend.register');
-        $result  = [
-            'alias' => []
-        ];
         
         foreach ($plugins as $plugin)
         {
@@ -32,17 +29,15 @@ class BackendRegisterCommand extends Command
             $source      = path($plugin->getPath(), 'Views', 'backend');
             $destination = path(__DIR__, '../Views/backend/src/vendor/' . $name);
             
-            // $result['alias'][$alias] = $directory;
-            
-            if (!is_link($destination))
+            if (is_link($destination))
             {
-                symlink($source, $destination);
+                unlink($destination);
             }
+    
+            symlink($source, $destination);
             
             $output->writeln('@' . $name . ' => ' . $source);
         }
-        
-        // $output->writeln(json_encode($result));
     }
     
 }
