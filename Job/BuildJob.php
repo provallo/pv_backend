@@ -16,6 +16,8 @@ class BuildJob implements JobInterface
     
     public function execute (OutputInterface $output): int
     {
+        $output->writeln('Building backend....');
+        
         $directory = __DIR__ . '/../Views/backend';
         
         if (!is_dir($directory . '/node_modules'))
