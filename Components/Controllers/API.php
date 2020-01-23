@@ -324,6 +324,24 @@ abstract class API extends \ProVallo\Components\Controller
             if ($validator->validate($model)) {
                 $model->save();
 
+                /**
+                 * Fixes parentID
+                 *
+                 * If an entity has children (referencing itself using property parentID)
+                 * the associated children probably don't have been created yet so we need
+                 * to fix their parentIDs to the new one.
+                 */
+                if (property_exists($model, 'parentID')) {
+                    $parentID = (int) $input['id'];
+                    $count = count($models);
+
+                    for ($i = 0; $i < $count; $i++) {
+                        if ((int) $models[$i]['parentID'] === $parentID) {
+                            $models[$i]['parentID'] = $model->id;
+                        }
+                    }
+                }
+
                 $this->afterSave($model, $isNew);
 
                 $input = $model->toArray($this->config['detail']['recursive']);
@@ -421,4 +439,19 @@ abstract class API extends \ProVallo\Components\Controller
     {
         return $this->config['model'];
     }
+
+    private function mapParents (Entity $entity, array $data, array &$models)
+    {
+        if (property_exists($model, 'parentID')) {
+            $parentID = (int) $input['id'];
+            $count = count($models);
+
+            for ($i = 0; $i < $count; $i++) {
+                if ((int) $models[$i]['parentID'] === $parentID) {
+                    $models[$i]['parentID'] = $model->id;
+                }
+            }
+        }
+    }
+
 }
