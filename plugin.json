@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "changelog": {
     "1.0.1": [
       "Initial release"
@@ -99,6 +99,15 @@
     ],
     "1.8.0": [
       "Improve API controller"
+    ],
+    "1.9.0": [
+      "Fix parentIDs (special fix for self inheriting entities)",
+      "Remove build script",
+      "Improve build job",
+      "Improve build job",
+      "Create permissions also on install",
+      "Fix installation process",
+      "Always re-link backend components in case of broken links"
     ]
   },
   "package": {
