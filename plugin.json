@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "changelog": {
     "1.0.1": [
       "Initial release"
@@ -108,6 +108,9 @@
       "Create permissions also on install",
       "Fix installation process",
       "Always re-link backend components in case of broken links"
+    ],
+    "1.10.0": [
+      "Add newIds to batchSave.response"
     ]
   },
   "package": {
