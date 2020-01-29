@@ -285,6 +285,7 @@ abstract class API extends \ProVallo\Components\Controller
     {
         $models = self::request()->getParam('data');
         $errors = [];
+        $newIds = [];
 
         /** @var \ProVallo\Plugins\Backend\Components\ModelValidator $validator */
         $validator = self::modelValidator();
@@ -323,6 +324,10 @@ abstract class API extends \ProVallo\Components\Controller
 
             if ($validator->validate($model)) {
                 $model->save();
+                
+                if ($isNew) {
+                    $newIds[$id] = $model->id;
+                }
 
                 /**
                  * Fixes parentID
@@ -355,7 +360,8 @@ abstract class API extends \ProVallo\Components\Controller
         if (empty($errors)) {
             return self::json()->success(
                 [
-                    'data' => $models,
+                    'data'   => $models,
+                    'newIds' => $newIds
                 ]
             );
         }
@@ -363,6 +369,7 @@ abstract class API extends \ProVallo\Components\Controller
         return self::json()->failure(
             [
                 'errors' => $errors,
+                'newIds' => $newIds
             ]
         );
     }
