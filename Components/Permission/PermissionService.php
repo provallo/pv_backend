@@ -58,7 +58,7 @@ class PermissionService
     public function validate ($name, User $user)
     {
         $sql = '
-            SELECT IF(pv.id, pv.value, IF(pv2.id, pv2.value, p.defaultValue))
+            SELECT MAX(IF(pv.id, pv.value, IF(pv2.id, pv2.value, p.defaultValue)))
             FROM permission p
             LEFT JOIN permission_value pv ON pv.userID = ?
             LEFT JOIN permission_value pv2 ON pv2.groupID = ?
