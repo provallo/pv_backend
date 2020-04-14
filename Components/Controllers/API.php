@@ -51,9 +51,9 @@ abstract class API extends \ProVallo\Components\Controller
 
         if (
             $this->isLoggedIn()
-            && !empty(self::DEFAULT_PERMISSION)
+            && !empty(static::DEFAULT_PERMISSION)
             && !self::permission()->validateUserID(
-                self::DEFAULT_PERMISSION,
+                static::DEFAULT_PERMISSION,
                 self::auth()->getUserID()
             )
         ) {
