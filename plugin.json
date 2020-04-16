@@ -6,7 +6,7 @@
   "author": "tyurderi",
   "website": "https://www.yurderi.de",
   "email": "tyurderi@yahoo.de",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "changelog": {
     "1.0.1": [
       "Initial release"
@@ -115,6 +115,11 @@
     "1.10.1": [
       "Fix permission check in API controller",
       "Fix permission service"
+    ],
+    "1.10.2": [
+      "Fix proxyTable.target for dev",
+      "Fix login using enter-key",
+      "Make auth::login method more public"
     ]
   },
   "package": {
