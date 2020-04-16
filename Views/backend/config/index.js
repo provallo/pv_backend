@@ -12,7 +12,7 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/backend': {
-                target: 'http://provallo.test/',
+                target: 'http://provallo.dev.localhost/',
                 changeOrigin: true
             }
         },
