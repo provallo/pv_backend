@@ -42,7 +42,7 @@ class UserController extends API
         
         try
         {
-            self::auth()->login($username, $password);
+            self::auth()->login($username, $password, 'user.backend.access');
             
             return self::json()->success([
                 'username' => $username
