@@ -2,17 +2,17 @@
     <div class="form-container">
         <v-message v-if="message.type" :type="message.type" v-html="message.text"></v-message>
 
-        <form @submit.prevent="submit">
+        <form method="post" @submit.prevent="submit">
             <slot></slot>
-        </form>
 
-        <div class="form-buttons" v-if="buttons.length > 0">
-            <v-button v-for="(button, key) in buttons"
-                      @click="click(button)"
-                      :key="key">
-                {{ button.label }}
-            </v-button>
-        </div>
+            <div class="form-buttons" v-if="buttons.length > 0">
+                <v-button v-for="(button, key) in buttons"
+                          @click="click(button)"
+                          :key="key">
+                    {{ button.label }}
+                </v-button>
+            </div>
+        </form>
 
         <div class="loading-container" :class="{ 'is--hidden': !loading && progress.value === null }">
             <fa icon="spinner" spin v-if="loading"></fa>
@@ -53,6 +53,8 @@ export default {
             if (button) {
                 me.click(button)
             }
+
+            console.log('test');
         },
         click (button) {
             let me = this
