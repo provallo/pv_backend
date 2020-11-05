@@ -1,5 +1,5 @@
 <template>
-    <div class="is--index view" style="padding:25px;">
+    <div class="is--index view has-background not-wide" style="padding:25px">
         <div>
             <h1>Welcome to ProVallo</h1>
             <p>

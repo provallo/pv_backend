@@ -21,19 +21,31 @@ h5 { font-size: 18px; }
 h6 { font-size: 14px; }
 
 #app {
-  .view {
-    display: flex;
-    flex-direction: row;
-    height: 100vh;
-    flex: 1;
-  }
+  background: linear-gradient(135deg, #16a085 0%, #16a085 1%, #2c3e50 100%) no-repeat fixed;
 
-  .layout-simple {
-
-  }
   .layout-sidebar {
     display: flex;
     flex-direction: row;
+
+    .view {
+      display: flex;
+      flex-direction: row;
+      margin: 15px 0 15px 0;
+      overflow-y: auto;
+      flex: 1;
+      height: calc(100vh - 30px);
+      border-radius: 15px 0 0 15px;
+
+      &.has-background {
+        background: #fff;
+      }
+
+      &.not-wide {
+        flex: none;
+        border-radius: 15px;
+        height: auto;
+      }
+    }
   }
 }
 
